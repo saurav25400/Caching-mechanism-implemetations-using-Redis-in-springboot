@@ -6,7 +6,6 @@ import com.codingshuttle.cachingApp.repositories.SalaryAccountRepository;
 import com.codingshuttle.cachingApp.services.SalaryAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class SalaryAccountServiceImpl implements SalaryAccountService {
 //        if(employee.getName().equals("Anuj")) throw new RuntimeException("Anuj is not allowed");
 
         SalaryAccount salaryAccount = SalaryAccount.builder()
-                .employee(employee)
+//                .employee(employee)
                 .balance(BigDecimal.ZERO)
                 .build();
 
@@ -33,7 +32,7 @@ public class SalaryAccountServiceImpl implements SalaryAccountService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public SalaryAccount incrementBalance(Long accountId) {
 
         SalaryAccount salaryAccount = salaryAccountRepository.findById(accountId)

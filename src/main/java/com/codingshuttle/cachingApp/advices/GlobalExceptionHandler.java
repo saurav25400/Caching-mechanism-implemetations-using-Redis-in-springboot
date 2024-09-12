@@ -2,6 +2,8 @@ package com.codingshuttle.cachingApp.advices;
 
 import com.codingshuttle.cachingApp.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,9 +18,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+    @ExceptionHandler(StaleObjectStateException.class)
+    public ResponseEntity<?> handleStaleObjectState(StaleObjectStateException ex) {
         log.error(ex.getLocalizedMessage());
-        return ResponseEntity.internalServerError().build();
+        return new ResponseEntity<>("Stale data\n", HttpStatus.CONFLICT);
     }
 }
